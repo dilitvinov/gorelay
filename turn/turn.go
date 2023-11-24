@@ -37,20 +37,21 @@ func NewServer(backendPort, clientsPort int) *Server {
 }
 
 func (s *Server) Serve() error {
-	backendSock, err := net.ListenUDP(protocol, s.forBackend)
+	var err error
+	s.backendSock, err = net.ListenUDP(protocol, s.forBackend)
 	if err != nil {
 		return fmt.Errorf("failed to listen backendSock: %w", err)
 	}
-	err = backendSock.SetReadBuffer(size)
+	err = s.backendSock.SetReadBuffer(size)
 	if err != nil {
 		return fmt.Errorf("failed to SetReadBuffer for backendSock: %w", err)
 	}
 
-	clientSock, err := net.ListenUDP(protocol, s.forClients)
+	s.clientSock, err = net.ListenUDP(protocol, s.forClients)
 	if err != nil {
 		return fmt.Errorf("failed to listen clientSock: %w", err)
 	}
-	err = clientSock.SetReadBuffer(size)
+	err = s.clientSock.SetReadBuffer(size)
 	if err != nil {
 		return fmt.Errorf("failed to SetReadBuffer for clientSock: %w", err)
 	}
