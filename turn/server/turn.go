@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"net"
 	"runtime"
-	"time"
 )
 
 var HelloPacket = []byte("HELLO_TURN")
 
 const (
-	size      = 2 << 15
+	size      = 2 << 17
 	protocol  = "udp"
 	localAddr = "0.0.0.0"
 	// localAddr = "127.0.0.1"
@@ -64,9 +63,6 @@ func (s *Server) Serve() error {
 
 	go s.readFromBackend()
 	s.readFromClients()
-
-	time.Sleep(time.Hour)
-
 	return nil
 }
 
