@@ -4,11 +4,14 @@ import (
 	"bytes"
 	"fmt"
 	"net"
+	"time"
 )
 
 const (
 	portForBackend = 2777
 	portForClients = 2778
+	localAddr      = "0.0.0.0"
+	// localAddr = "127.0.0.1"
 )
 
 var HelloPacket = []byte("HELLO_TURN")
@@ -51,8 +54,8 @@ func NewServer(backendPort, clientsPort int) *Server {
 	s := &Server{
 		vacantBackends: make(chan net.Addr, 10),
 		addrMap:        make(map[string]sThread),
-		forBackend:     &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: backendPort},
-		forClients:     &net.UDPAddr{IP: net.ParseIP("0.0.0.0"), Port: clientsPort},
+		forBackend:     &net.UDPAddr{IP: net.ParseIP(localAddr), Port: backendPort},
+		forClients:     &net.UDPAddr{IP: net.ParseIP(localAddr), Port: clientsPort},
 	}
 	return s
 }
@@ -79,6 +82,8 @@ func (s *Server) Serve() error {
 
 	go s.readFromBackend()
 	s.readFromClients()
+
+	time.Sleep(time.Hour)
 
 	return nil
 }
@@ -128,7 +133,7 @@ func (s *Server) readFromClients() {
 				sock:   s.clientSock,
 				dataCh: make(chan []byte, 10),
 			}
-			go stBackend.transmitData()
+			go stClient.transmitData()
 			s.addrMap[backendAddr.String()] = stClient
 			stBackend.dataCh <- slice[:n]
 		} else {

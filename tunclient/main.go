@@ -15,7 +15,10 @@ const (
 	HelloPacket   = "HELLO_TURN"
 	TurnRelayAddr = "176.107.133.219:2777"
 	BackendAddr   = "0.0.0.0:1194"
-	Protocol      = "udp"
+	// TurnRelayAddr = "0.0.0.0:2777"
+	// BackendAddr   = "95.165.1.34:1194"
+
+	Protocol = "udp"
 )
 
 // TODO
