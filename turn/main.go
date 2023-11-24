@@ -18,7 +18,6 @@ var HelloPacket = []byte("HELLO_TURN")
 
 // Мы релей. Ждем приветственный пакет от прокси бекенда.
 // Далее ждем подключений от клиентов.
-// TODO Err(clientSock.SetReadBuffer(size))
 func main() {
 	s := NewServer(portForBackend, portForClients)
 	Err(s.Serve())
@@ -150,7 +149,6 @@ func (st *sThread) transmitData() {
 			fmt.Println("error transmitData: %w", err)
 		} else {
 			fmt.Println(fmt.Sprintf("wrote from %s to %s %d byte!", st.sock.LocalAddr().String(), st.addr.String(), n))
-
 		}
 	}
 }
