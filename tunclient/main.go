@@ -8,7 +8,7 @@ import (
 
 const (
 	// TODO is it enough?
-	size = 2 << 15
+	size = 2 << 17
 )
 
 const (
