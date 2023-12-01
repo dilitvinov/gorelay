@@ -25,6 +25,7 @@ const (
 	SigConnClosed
 )
 
+// TODO дропать после 10 мин простоя
 func handle(
 	backendAddr *net.UDPAddr,
 	relayConn net.Conn,
@@ -41,16 +42,16 @@ func handle(
 	go func() {
 		// wait for the first bytes
 		firstBytes := make([]byte, size)
-		_, err := relayConn.Read(firstBytes)
+		n, err := relayConn.Read(firstBytes)
 		if err != nil {
 			fmt.Println(err)
 			err = nil
 		}
 
-		h.server, err = net.ListenUDP(Protocol, h.backendAddr)
+		h.server, err = net.DialUDP(Protocol, nil, backendAddr)
 		Err(err)
 
-		h.to <- firstBytes
+		h.to <- firstBytes[:n]
 		h.sigChan <- SigFirstBatch
 		h.startExchange()
 	}()

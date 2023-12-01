@@ -10,7 +10,7 @@ import (
 var HelloPacket = []byte("HELLO_TURN")
 
 const (
-	size      = 2 << 17
+	size      = 2 << 15
 	protocol  = "udp"
 	localAddr = "0.0.0.0"
 	// localAddr = "127.0.0.1"
