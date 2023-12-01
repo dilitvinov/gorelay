@@ -43,6 +43,10 @@ func main() {
 	for {
 		turnSock, err := net.DialUDP(Protocol, nil, turnAddr)
 		Err(err)
+
+		// send HelloPacket
+		_, err = turnSock.Write([]byte(HelloPacket))
+		Err(err)
 		<-handle(backendAddr, turnSock)
 	}
 
